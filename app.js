@@ -3,27 +3,37 @@
 
 // $('#map').append('<iframe src="https://www.google.com/maps/embed/v1/place?q='+ town +'&key=AIzaSyBxPnXkJa0pzukRSn_d1xLRcZDXhEpDJxo" allowfullscreen></iframe>')
 // $(document).ready(function(){
-function clearMarkers() {
-       setMapOnAll(null);
-     }
-
+var gMarkers = [];
+var bounds;
 var map;
+function removeMarkers(){
+  for(i=0; i<gMarkers.length; i++){
+    gMarkers[i].setMap(null);
+  }
+};
 function initMap() {
-  var bounds = new google.maps.LatLngBounds();
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 39.8283, lng: -98.5795},
-    zoom: 4
-  });
 
   $('#searchButton').click(function(startEvent){
+    var myOptions = {
+      minZoom: 10,
+      center: new google.maps.LatLng(cityLat, cityLong),
+      mapTypeId: google.maps.MapTypeId.HYBRID
+
+    }
+    map = new google.maps.Map(document.getElementById('map'), myOptions);
+    bounds = new google.maps.LatLngBounds();
+    // setTimeout( function() { map.fitBounds(bounds); }, 1 );
+    if (gMarkers.length >= 1) {removeMarkers()}
     $('.clickable').empty();
     var town = $('#city').val();
     var distance = $('#range').val();
+    var cityLat
+    var cityLong
 
 
   $.get("https://maps.googleapis.com/maps/api/geocode/json?address="+ town +"&key=AIzaSyAoIyj32avw0yFjL4PxPkuI5F6X3_V5jTQ", function(address){
-    var cityLat = address["results"][0]["geometry"]["location"]["lat"]
-    var cityLong = address["results"][0]["geometry"]["location"]["lng"]
+    cityLat = address["results"][0]["geometry"]["location"]["lat"]
+    cityLong = address["results"][0]["geometry"]["location"]["lng"]
 
 
   $.ajax('https://trailapi-trailapi.p.mashape.com/?lat='+ cityLat +'limit=6&lon='+ cityLong +'&q[activities_activity_type_name_eq]=hiking&q[city_cont]='+ town +'&radius='+ distance +'', {
@@ -37,11 +47,12 @@ function initMap() {
     var markers = [];
     for (var i = 0; i < hikeArray.length; i++){
       var hikeName = hikeArray[i]["name"];
+      var hikeInfo = hikeArray[i]["description"]
       var hikeDist = hikeArray[i]["activities"][0]["length"];
       var hikeLat = hikeArray[i]["lat"];
       var hikeLong = hikeArray[i]["lon"];
       var tempMarkers = [];
-      tempMarkers.push(hikeName, hikeLat, hikeLong);
+      tempMarkers.push(hikeName, hikeLat, hikeLong, hikeInfo);
       markers.push(tempMarkers);
       $('#resultsRow').append('<div class="col-md-2 col-lg-2 clickable"><h4>'+ hikeName +'</h4><h6>'+ hikeDist +' miles</h6></div>');
 
@@ -50,23 +61,31 @@ function initMap() {
     var infowindow = new google.maps.InfoWindow(), marker, i;
     for (i = 0; i < markers.length; i++) {
       var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
-        bounds.extend(position);
         marker = new google.maps.Marker({
             position: new google.maps.LatLng(markers[i][1], markers[i][2]),
             map: map
         });
+        gMarkers.push(marker);
         google.maps.event.addListener(marker, 'click', (function(marker, i) {
             return function() {
                 infowindow.setContent(markers[i][0]);
                 infowindow.open(map, marker);
             }
         })(marker, i));
-        map.fitBounds(bounds);
+        bounds.extend(position);
+        //End loop
     }
-    // var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
-    //     this.setZoom(8);
-    //     google.maps.event.removeListener(boundsListener);
-      // });
+    // map.setCenter(bounds.getCenter());
+    // google.maps.event.addListenerOnce(googleMap, 'zoom_changed', function() {
+    //     var oldZoom = googleMap.getZoom();
+    //     googleMap.setZoom(oldZoom + 4); //Or whatever
+    // });
+map.fitBounds(bounds);
+      // map.fitBounds(bounds);
+    var boundsListener = google.maps.event.addListenerOnce((map), 'bounds_changed', function(event) {
+      this.setZoom(7);
+      // google.maps.event.removeListener(boundsListener);
+    });
     // End hike data function
   })
   // End lat/long function
