@@ -36,7 +36,7 @@ function initMap() {
     cityLong = address["results"][0]["geometry"]["location"]["lng"]
 
 
-  $.ajax('https://trailapi-trailapi.p.mashape.com/?lat='+ cityLat +'limit=6&lon='+ cityLong +'&q[activities_activity_type_name_eq]=hiking&q[city_cont]='+ town +'&radius='+ distance +'', {
+  $.ajax('https://trailapi-trailapi.p.mashape.com/?lat='+ cityLat +'&limit=9&lon='+ cityLong +'&q[activities_activity_type_name_eq]=hiking&q[city_cont]='+ town +'&radius='+ distance +'', {
     headers: {
       "X-Mashape-Key": "zUC9v7vhTTmshRZhrNE1rQk5JtbGp1SS6DujsnmsruSvj2RWYd",
       "Accept": "text/plain"
@@ -44,6 +44,7 @@ function initMap() {
     method: "GET"
   }).then(function(data) {
     var hikeArray = data["places"];
+    console.log(hikeArray)
     var markers = [];
     for (var i = 0; i < hikeArray.length; i++){
       var hikeName = hikeArray[i]["name"];
@@ -54,7 +55,7 @@ function initMap() {
       var tempMarkers = [];
       tempMarkers.push(hikeName, hikeLat, hikeLong, hikeInfo);
       markers.push(tempMarkers);
-      $('#resultsRow').append('<div class="col-md-2 col-lg-2 clickable"><h4>'+ hikeName +'</h4><h6>'+ hikeDist +' miles</h6></div>');
+      $('#hikeLanding').append('<div class="clickable"><blockquote><p>'+ hikeName +'</p><footer>'+ hikeDist +' miles</footer></blockquote></div>');
 
         // End for loop for hike data
     }

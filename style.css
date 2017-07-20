@@ -1,8 +1,15 @@
-      /*#map {
-        height: 100%;
-        width: 100%;
-      }*/
+#searchButton {
+  margin-top: 2.1%;
+}
+
+.navbar.nav.navbar-text.p {
+  color: blue;
+}
+
+body {
+  background-color: rgb(229, 227, 223);
+}
 
 .clickable {
-
+  display: inline-block;
 }

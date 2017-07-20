@@ -15,9 +15,8 @@
     <title>find a hike</title>
   </head>
   <body>
-    <nav class="navbar navbar-inverse navbar-static-top">
-      <!-- <div class="navbar-header"></div>
-      <div class="container-fluid"></div> -->
+    <nav class="navbar navbar-inverse">
+<p class="nav navbar-text">find a hike</p>
     </nav>
     <div class="container">
       <h2>Where do you want to explore?</h2>
@@ -25,7 +24,7 @@
         <div class="form-inline">
           <div class="input-group">
             <label for="City">City:</label>
-            <input type="text" class="form-control" id="city" placeholder="Phoenix">
+            <input type="text" class="form-control" id="city">
           </div>
           <div class="input-group">
             <label for="Range">Range (miles)</label>
@@ -46,10 +45,12 @@
       <div class="col-md-6 col-lg-6 col-sm-6">
         <div class="embed-responsive embed-responsive-4by3" id="map"></div>
 </div>
+<div class="col-md-6 col-lg-6 col-sm-6" id="hikeLanding">
+</div>
   </div>
 </div>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDysTMMJGBMd3xGFhySpk4D-uKW3p7L47s&callback=initMap"
     async defer></script>
-    <nav class="navbar navbar-inverse navbar-fixed-bottom"></nav>
+    <nav class="navbar navbar-inverse navbar-fixed-bottom"><p class="nav navbar-text">Thomas Elkins</p></nav>
   </body>
 </html>
