@@ -1,8 +1,3 @@
-// API Key // AIzaSyCi-MW1w-4A5cMCJBS9G7dLZryq_lIOLsw
-// MAP JS Key // AIzaSyDysTMMJGBMd3xGFhySpk4D-uKW3p7L47s
-
-// $('#map').append('<iframe src="https://www.google.com/maps/embed/v1/place?q='+ town +'&key=AIzaSyBxPnXkJa0pzukRSn_d1xLRcZDXhEpDJxo" allowfullscreen></iframe>')
-// $(document).ready(function(){
 var gMarkers = [];
 var bounds;
 var map;
@@ -22,7 +17,6 @@ function initMap() {
     }
     map = new google.maps.Map(document.getElementById('map'), myOptions);
     bounds = new google.maps.LatLngBounds();
-    // setTimeout( function() { map.fitBounds(bounds); }, 1 );
     if (gMarkers.length >= 1) {removeMarkers()}
     $('.clickable').empty();
     var town = $('#city').val();
@@ -76,16 +70,9 @@ function initMap() {
         bounds.extend(position);
         //End loop
     }
-    // map.setCenter(bounds.getCenter());
-    // google.maps.event.addListenerOnce(googleMap, 'zoom_changed', function() {
-    //     var oldZoom = googleMap.getZoom();
-    //     googleMap.setZoom(oldZoom + 4); //Or whatever
-    // });
 map.fitBounds(bounds);
-      // map.fitBounds(bounds);
     var boundsListener = google.maps.event.addListenerOnce((map), 'bounds_changed', function(event) {
       this.setZoom(7);
-      // google.maps.event.removeListener(boundsListener);
     });
     // End hike data function
   })
@@ -94,5 +81,4 @@ map.fitBounds(bounds);
   // End click function
   })
   // End load function
-  // })
 }
